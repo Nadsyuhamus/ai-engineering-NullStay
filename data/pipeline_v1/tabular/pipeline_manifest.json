@@ -1,0 +1,27 @@
+{
+  "pipeline_version": "v1",
+  "source_dataset": "Hotel Booking Demand",
+  "source_file": "hotel_bookings.csv",
+  "source_sha256": "7c2ae42a7353905ea136e5c2287f17c92c5435826598bfbb8491c6f0c7b1fc06",
+  "output_file": "prepared_table.csv",
+  "output_sha256": "7be5eaba12d514ccc33e041b0496ec1fb6b6740e451426346d7bc4be5cedef18",
+  "source_rows": 119390,
+  "source_columns": 32,
+  "prepared_rows": 119390,
+  "prepared_columns": [
+    "arrival_date",
+    "hotel",
+    "lead_time",
+    "arrival_date_month",
+    "is_canceled"
+  ],
+  "positive_labels": 44224,
+  "positive_label_meaning": "Cancellation or no-show",
+  "candidate_inputs": [
+    "hotel",
+    "lead_time",
+    "arrival_date_month"
+  ],
+  "date_for_filters_and_split_design": "arrival_date",
+  "target": "is_canceled"
+}
