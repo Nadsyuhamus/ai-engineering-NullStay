@@ -1,40 +1,35 @@
 # Requirements Specification — NullStay
 
-Version: 1.0 — Initial planning draft  
-Project: NullStay  
+Version: 1.1 — Updated evidence and project objectives
+Project: NullStay
 Domain: Hospitality and Business Analytics
 
 ## 0. Project Context
 
 ### Problem
 
-Hotel booking cancellations create uncertainty when hotel staff estimate occupancy and plan operations. Historical cancellation percentages can describe past patterns, but they do not distinguish the cancellation risk of individual bookings.
-
-Research has investigated machine learning for predicting hotel booking cancellations and incorporating predictions into decision-support systems. This provides evidence for the problem and the feasibility of the approach, rather than a guarantee that NullStay will achieve similar results.
+Hotel booking cancellations and no-shows create uncertainty when staff estimate occupancy and plan operations. An overall historical rate describes how often bookings ended in cancellation or no-show. NullStay will test whether booking characteristics can improve those estimates at the individual level.
 
 ### Supporting Evidence
 
-1. António, de Almeida, and Nunes (2017), *Predicting hotel booking cancellations to decrease uncertainty and increase revenue*, examines cancellation prediction using records from four resort hotels.  
-   https://doi.org/10.18089/tms.2017.13203
-
-2. António, de Almeida, and Nunes (2019), *An Automated Machine Learning Based Decision Support System to Predict Hotel Booking Cancellations*, investigates an operational decision-support approach.  
-   https://doi.org/10.5334/dsj-2019-032
+1. A study of more than two million hotel bookings in Mallorca, Spain, from 2021 to 2024 found that cancellation likelihood varied with booking conditions such as refundability and lead time (Ramos Mir et al., 2026). [Full paper through Virginia Tech](https://vtechworks.lib.vt.edu/server/api/core/bitstreams/810d9c86-f74a-4687-b56e-6b88acefe914/content)
+2. An automated cancellation prediction system was deployed in two hotels to investigate how forecasts could support operational demand management (Antonio et al., 2019). [Open-access journal article](https://reference-global.com/article/10.5334/dsj-2019-032)
 
 ### Existing Approaches and Engineering Gap
 
 | Approach | Strength | Limitation relevant to NullStay |
 |---|---|---|
-| Historical cancellation rate | Simple, inexpensive benchmark for estimating cancellation frequency. | An overall rate assigns the same estimate to bookings with different characteristics. |
-| Supervised classification models | Can learn relationships between booking characteristics and cancellation outcomes. | Predictive performance alone does not establish whether probabilities are calibrated or useful to staff. |
-| Automated cancellation decision-support systems | Demonstrate how predictions can support hotel operations. | Published performance and operational outcomes require validation before being applied to another dataset or setting. |
+| Historical cancellation rate | Provides a simple planning benchmark. See the forecasting context in the study of four resort hotels (Antonio et al., 2017). [Full paper on SciELO](https://scielo.pt/pdf/tms/v13n2/13n2a03.pdf) | One overall rate assigns the same estimate to every booking. |
+| Explainable booking-level prediction | Combines prediction with an explanation of which inputs influenced the model. One study used a combination of models and SHAP explanations (Gómez-Talal et al., 2025). [Full author manuscript](https://burjcdigital.urjc.es/server/api/core/bitstreams/9e227b3a-9c5d-442e-9037-156922e762a2/content) | The study used city-hotel records. NullStay needs evidence for its city and resort subsets and will test whether users can interpret its explanations. |
+| Automated cancellation decision support | Brings estimates into hotel workflows to support demand management (Antonio et al., 2019). [Open-access journal article](https://reference-global.com/article/10.5334/dsj-2019-032) | Measuring operational impact requires deployment and evaluation in the hotel workflow. |
 
-NullStay will combine historical exploration, booking-level predictions, and model explanations in a small dashboard. Its contribution is an implemented and evaluated student prototype, rather than a claim to invent a new prediction method.
+NullStay’s planned contribution is a dashboard prototype that validates booking inputs and presents individual estimates, model explanations, and batch summaries. Because it adds probabilities to estimate batch outcomes, the evaluation will check the quality of those probabilities as well as predictive discrimination.
 
 ### Objectives
 
-- **O1:** Design a dashboard that helps hotel staff explore historical booking and cancellation patterns.
-- **O2:** Develop a cancellation prediction workflow that provides estimated probabilities and understandable explanations.
-- **O3:** Evaluate predictive performance, probability quality, usability, and processing speed against defined baselines and criteria.
+- **O1:** To design a historical dashboard that lets reservation staff compare the proportion of bookings that ended in cancellation or no-show by hotel type and arrival period.
+- **O2:** To develop a workflow that validates and scores single bookings and CSV batches, explains which inputs influenced individual estimates, and reports the expected number of cancellations or no-shows in a batch.
+- **O3:** To evaluate predictive performance and probability quality against a historical-rate baseline using held-out records, and assess the dashboard against its usability and response-time targets.
 
 ### Intended Users
 
@@ -42,102 +37,74 @@ Hotel reservation staff and revenue-management analysts.
 
 ### Main User Tasks
 
-- Explore cancellation patterns in historical bookings.
-- Estimate the cancellation probability of a booking.
-- Upload compatible booking records for batch prediction.
-- Review model-influential inputs and export batch results.
+- Explore historical booking outcomes by hotel type and arrival period.
+- Estimate the probability of cancellation or no-show for a single booking.
+- Upload compatible booking records for batch prediction and identify invalid rows.
+- Review which inputs influenced individual estimates and view the estimated batch total.
+- Export predictions and validation results for staff review.
 
 ### Data and Operating Context
 
-The initial candidate is the Hotel Booking Demand dataset, containing historical records from two hotels in Portugal during 2015–2017.
+NullStay uses the [Hotel Booking Demand dataset](https://www.kaggle.com/datasets/jessemostipak/hotel-booking-demand), which contains historical records from two hotels in Portugal. The Week 3 inspection confirmed 119,390 records with arrival dates from 1 July 2015 to 31 August 2017.
 
-Dataset publication: https://doi.org/10.1016/j.dib.2018.11.126  
-Dataset access: https://www.kaggle.com/datasets/jessemostipak/hotel-booking-demand
+The label `is_canceled = 1` includes cancellations and no-shows. In the tables below, **positive outcome** refers to either event. The intended prediction point is when a booking is entered or confirmed. The historical records provide limited evidence about which fields were available at that point, so input eligibility remains subject to review.
 
-Newer candidate sources are recorded separately in `data/README.md`. Their inclusion depends on access, provenance, compatibility, and data-quality checks.
-
-The intended prediction point is when a booking is entered or confirmed. However, the historical dataset does not provide complete booking-time snapshots. Feature eligibility and the precise prediction claim must therefore be confirmed during the data audit.
+See the [data inventory](week3_data_inventory.md) for inspection results and the [dataset notes](../data/README.md) for candidate sources and access information.
 
 ### Constraints
 
 - The project uses a limited historical dataset and student computing resources.
-- The prototype must not claim that results generalise to current hotels or Malaysian hotels without further validation.
-- Model inputs must be reviewed for whether they would be available at the intended prediction time.
-- Data preparation and model selection must avoid using the final test set.
-- Dataset access and redistribution must follow the applicable source terms.
+- Evaluation conclusions apply to the dataset and conditions tested. Use in current or Malaysian hotels would require further validation.
+- Review whether each candidate input would be available at the intended prediction point.
+- Fit learned preprocessing on training data and reserve the final test partition for evaluation.
+- Follow the dataset source terms for access, storage, and redistribution.
 
 ### Out of Scope
 
-- Automatically cancelling bookings or rejecting guests.
-- Automatically changing room prices or making overbooking decisions.
-- Guaranteeing revenue improvements or preventing cancellations.
+- Automated cancellation, guest rejection, or guest penalties.
+- Automated pricing and overbooking decisions.
+- Revenue improvement guarantees.
 - Live integration with hotel reservation systems.
-- Treating model explanations as proof of why a guest will cancel.
+- Causal claims about individual booking outcomes.
 
 ### Evaluation Focus
 
-Evaluation will cover predictive discrimination, calibration, dashboard task completion, processing speed, and compliance with data and decision boundaries.
+Evaluation will cover predictive discrimination, probability calibration, dashboard task completion, processing speed, data handling, and decision boundaries.
 
 ## 1. Functional Requirements
 
 | ID | Requirement | Acceptance check |
 |---|---|---|
-| FR1 | The system shall display historical booking counts, cancellation counts, and cancellation rates, with filters for hotel type and arrival period. | Compare displayed values with independently calculated values for selected filters. |
-| FR2 | The system shall accept one booking through a form, validate the supported inputs, and return an estimated cancellation probability. | A valid booking produces a probability from 0 to 1; invalid inputs produce a clear validation message. |
+| FR1 | The system shall display historical booking counts, positive-outcome counts, and positive-outcome rates, with filters for hotel type and arrival period. | Compare displayed values with independently calculated values for selected filters. |
+| FR2 | The system shall accept one booking through a form, validate the supported inputs, and return an estimated probability of cancellation or no-show. | A valid booking produces a probability between 0 and 1. Invalid inputs produce a clear validation message. |
 | FR3 | The system shall display up to three model-influential inputs alongside a prediction and explain that they describe model associations. | Inspect example predictions for consistent inputs, readable labels, and an explanation of their limits. |
-| FR4 | The system shall accept a CSV with the required booking fields and produce a probability for each valid row while identifying invalid rows. | Test a valid file, a file with missing required columns, and a file containing invalid rows. |
-| FR5 | The system shall display batch booking counts and the sum of predicted probabilities as the estimated number of cancellations. | Compare the dashboard total with the sum of exported probabilities; confirm it is labelled as an estimate. |
-| FR6 | The system shall allow users to download batch results containing a row identifier, prediction or validation status, and cancellation probability where available. | Download and inspect results for correct row alignment, values, and validation messages. |
+| FR4 | The system shall accept a CSV with the required booking fields, produce a probability for each valid row, and identify invalid rows. | Test a valid file, a file missing required columns, and a file containing invalid rows. |
+| FR5 | The system shall display batch booking counts and the sum of predicted probabilities as the expected number of cancellations or no-shows among valid bookings. | Compare the dashboard total with the sum of exported probabilities and confirm the total is labelled as an estimate. |
+| FR6 | The system shall allow users to download batch results with a row identifier, prediction or validation status, and probability where available. | Inspect the downloaded results for correct row alignment, values, and validation messages. |
 
 ## 2. Non-Functional Requirements
 
-The thresholds below are initial targets. They will be reviewed after the data audit and baseline evaluation. Any revision will be documented with its justification.
+These are proposed acceptance targets. Any revision after the data audit or baseline evaluation will be documented with its justification.
 
 | ID | Quality attribute | Requirement and target | Measurement method |
 |---|---|---|---|
-| NFR1 | Predictive discrimination | On a held-out test set, the selected model shall achieve PR-AUC at least 0.05 above the test-set cancellation prevalence. | Calculate average precision as the defined PR-AUC measure. Also report precision, recall, F1, and the confusion matrix at a threshold selected using validation data. |
-| NFR2 | Probability quality | The selected model shall achieve a lower Brier score than a constant-probability baseline using the training-set cancellation rate. | Compare both on the same held-out test records and inspect a calibration plot. |
-| NFR3 | Response time | After application and model loading, the system shall return a single prediction within 2 seconds at the 90th percentile and process a valid 1,000-row CSV within 10 seconds at the 90th percentile. | Time 30 single predictions and 10 batch runs; record the device and test conditions. |
-| NFR4 | Usability and clarity | At least 4 of 5 formative test participants shall complete the single-booking and batch-export tasks without assistance and correctly interpret a probability as uncertain. | Observe task completion and ask a short interpretation question. Record participants’ relevant experience. |
-| NFR5 | Numerical correctness | Dashboard aggregates and exported predictions shall match reference calculations across at least five selected test cases. | Compare counts exactly, cancellation rates within 0.01 percentage points, and exported probabilities within 0.000001 of model outputs. |
-| NFR6 | Reproducibility | Re-running the documented training workflow with the same data, configuration, seed, and environment shall reproduce the same test split and evaluation metrics within 0.0001. | Compare split identifiers and metrics from two runs. |
+| NFR1 | Predictive discrimination | On a held-out test set, the selected model shall achieve average precision at least 0.05 above the test-set positive-label prevalence. | Use average precision as the defined PR-AUC measure. Also report precision, recall, F1, and a confusion matrix at a threshold selected using validation data. |
+| NFR2 | Probability quality | The selected model shall achieve a lower Brier score than a constant-probability baseline using the training-set positive-label rate. | Compare both on the same held-out test records and inspect a calibration plot. |
+| NFR3 | Response time | After application and model loading, the system shall return a single prediction within 2 seconds at the 90th percentile and process a valid 1,000-row CSV within 10 seconds at the 90th percentile. | Time 30 single predictions and 10 batch runs. Record the device and test conditions. |
+| NFR4 | Usability and clarity | At least 4 of 5 formative test participants shall complete the single-booking and batch-export tasks without assistance and correctly interpret a probability as uncertain. | Observe task completion, ask a short interpretation question, and record participants’ relevant experience. |
+| NFR5 | Numerical correctness | Dashboard aggregates and exported predictions shall match reference calculations across at least five selected test cases. | Compare counts exactly, rates within 0.01 percentage points, and exported probabilities within 0.000001 of model outputs. |
+| NFR6 | Reproducibility | Rerunning the documented training workflow with the same data, configuration, seed, and environment shall reproduce the same test split and evaluation metrics within 0.0001. | Compare split identifiers and metrics from two runs. |
 
-The usability study is a small formative evaluation. It does not establish usability for all hotel staff.
+The usability study is a small formative evaluation that will guide improvements to the prototype.
 
 ## 3. Responsible AI Requirements
 
 | ID | Risk | Requirement | Evaluation method and acceptance target |
 |---|---|---|---|
 | RAI1 | Overreliance on predictions | The system shall present predictions as uncertain estimates and shall not automatically cancel, reject, or penalise bookings. | Inspect all prediction views for uncertainty wording and confirm that no automated booking-action function exists. |
-| RAI2 | Leakage and misleading performance | The training workflow shall exclude the target and known post-outcome fields from model inputs. It shall document the eligibility of every retained feature. | Audit 100% of retained features. Exclude `reservation_status` and `reservation_status_date`; exclude other fields whose availability at the prediction point cannot be justified. Fit learned preprocessing only on training data. |
-| RAI3 | Misleading explanations | The system shall describe explanations as model influences, rather than causes or guarantees about a guest’s behaviour. | Inspect at least 10 example explanations. All must include the explanation limitation and avoid causal or certain wording. |
-| RAI4 | Uneven performance across hotel contexts | Evaluation shall report performance separately for City Hotel and Resort Hotel when each test subset contains at least 100 records and both outcomes. | Report subgroup sample sizes, precision, recall, PR-AUC, and Brier score. Flag a recall difference above 0.15 for investigation; do not describe smaller gaps as proof of fairness. |
-| RAI5 | Exposure of uploaded booking data | The prototype shall not intentionally persist uploaded CSV contents or include guest-identifying fields in its required input schema. | Inspect storage and logging behaviour using a test upload. Confirm that no application-created upload file remains after processing and that required fields exclude names, emails, and phone numbers. |
+| RAI2 | Leakage and misleading performance | The training workflow shall exclude the target and known post-outcome fields from model inputs. It shall document the eligibility of every retained feature. | Audit all retained features. Exclude `reservation_status`, `reservation_status_date`, and fields whose availability at the intended prediction point cannot be justified. Fit learned preprocessing only on training data. |
+| RAI3 | Misleading explanations | The system shall describe explanations as model influences and avoid causal or certain claims about an individual booking. | Inspect at least 10 example explanations. All must describe their limitation and avoid causal or certain wording. |
+| RAI4 | Uneven performance across hotel contexts | Evaluation shall report performance separately for City Hotel and Resort Hotel when each test subset contains at least 100 records and both outcomes. | Report subgroup sample sizes, precision, recall, PR-AUC, and Brier score. A recall difference above 0.15 triggers investigation. |
+| RAI5 | Exposure of uploaded booking data | The prototype shall process CSV uploads without intentionally retaining their contents and shall exclude guest-identifying fields from the required input schema. | Inspect storage and logs after a test upload. Confirm that no application-created upload file remains and that names, emails, and phone numbers are outside the required fields. |
 
-Subgroup checks assess performance across the two available hotel contexts. They do not establish fairness across demographic groups.
-
-## 4. Data Audit Decisions Still Required
-
-Before modelling, confirm:
-
-1. The target definition, including how no-shows are represented.
-2. Missing-value meanings and valid input ranges.
-3. Which fields are available at the intended prediction point.
-4. Whether dates support an appropriate chronological evaluation.
-5. How repeated anonymous rows should be handled without assuming they are duplicate bookings.
-6. Whether source terms permit the planned storage and sharing.
-7. Whether newer candidate data are suitable for any additional evaluation.
-
-If genuine booking-time availability cannot be established, NullStay will explicitly describe its predictions as a retrospective historical prototype.
-
-## 5. Initial Traceability
-
-| Objective | Supporting requirements |
-|---|---|
-| O1: Explore historical patterns | FR1, NFR4, NFR5 |
-| O2: Provide predictions and explanations | FR2–FR6, NFR2, RAI1, RAI3, RAI5 |
-| O3: Evaluate the prototype | NFR1–NFR6, RAI2, RAI4 |
-
-## 6. Current Status
-
-This document specifies planned behaviour and proposed acceptance criteria. No model performance, processing-time result, or user-test outcome has been established yet.
+The subgroup checks assess performance across the two available hotel contexts.

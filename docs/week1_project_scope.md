@@ -10,215 +10,183 @@ Hospitality / Business Analytics / Machine Learning
 
 ## Problem Statement
 
-Hotel booking cancellations create uncertainty about how many reservations will become actual stays. This complicates demand forecasting and operational planning.
+Hotel booking cancellations and no-shows create uncertainty about how many reservations will become actual stays. This complicates occupancy forecasting and operational planning. An overall historical rate gives staff a starting point, but it assigns the same estimate to bookings with different characteristics.
 
-NullStay proposes a dashboard that estimates cancellation likelihood from selected booking-related information. It will display predictions, model explanations, and summaries across booking records to support human review.
+NullStay proposes a dashboard that estimates the probability of cancellation or no-show from selected booking information. It will show which inputs influenced each displayed prediction and summarise the expected number of cancellations or no-shows across a batch of bookings.
 
-The initial application will be developed and evaluated using historical data. It will not automatically cancel reservations, reject guests, or guarantee revenue improvements.
+The prototype will be developed and evaluated using historical records. Hotel staff will retain control of booking decisions.
 
 ## Evidence of the Problem
 
 ### Evidence 1 — Cancellations affect demand forecasting
 
-António, de Almeida, and Nunes (2017) explain that booking cancellations affect demand forecasts and hotel management decisions. Their study investigates cancellation prediction using data from four resort hotels.
+A study that deployed an automated cancellation prediction system in two hotels examined how cancellation estimates could support demand forecasting and hotel operations (Antonio et al., 2019).
 
-This supports cancellation prediction as a practical problem. The study's reported performance does not establish what NullStay will achieve.
+This establishes the practical context for NullStay. The project will evaluate its own predictions and interface using its selected dataset and test conditions.
 
-Reference:
-António, N., de Almeida, A., & Nunes, L. (2017).
-Predicting hotel booking cancellations to decrease uncertainty and increase revenue.
-Tourism & Management Studies, 13(2), 25–39.
+**Reference**
+Antonio, N., de Almeida, A., & Nunes, L. (2019). An automated machine learning based decision support system to predict hotel booking cancellations. *Data Science Journal, 18*(1), Article 32.
 
-https://scielo.pt/pdf/tms/v13n2/13n2a03.pdf
+[Read the open-access journal article](https://reference-global.com/article/10.5334/dsj-2019-032)
 
-### Evidence 2 — Cancellation prediction has been studied in operational decision support
+### Evidence 2 — Cancellation likelihood varies across booking conditions
 
-António, de Almeida, and Nunes (2019) describe an automated machine-learning decision-support system for predicting hotel booking cancellations.
+An analysis of more than two million hotel bookings in Mallorca, Spain, from 2021 to 2024 found that cancellation likelihood varied with conditions such as refundability and how far in advance the reservation was made (Ramos Mir et al., 2026).
 
-This supports the operational relevance of the task. Its outcomes cannot be assumed to apply to a new student prototype or different hotels.
+This motivates testing whether booking-level probability estimates improve on an overall historical rate for the NullStay dataset.
 
-Reference:
-António, N., de Almeida, A., & Nunes, L. (2019).
-An Automated Machine Learning Based Decision Support System to Predict Hotel Booking Cancellations.
-Data Science Journal, 18, 32.
+**Reference**
+Ramos Mir, V., Deyá Tortella, B., Leoni, V., & Nicolau, J. L. (2026). Decoding booking cancellations: Quantitative insights and theoretical advances in tourism behavior. *Tourism Management, 114*, Article 105384.
 
-https://reference-global.com/article/10.5334/dsj-2019-032?tab=preview
+[Read the full paper through Virginia Tech](https://vtechworks.lib.vt.edu/server/api/core/bitstreams/810d9c86-f74a-4687-b56e-6b88acefe914/content)
 
 ## Initial Related Work / Existing Approaches
 
 ### 1. Historical cancellation-rate forecasting
 
-Approach:
-Estimate future cancellations using historical cancellation rates, either overall or for selected booking segments.
+**Approach**
+Estimate future cancellations using an overall historical rate or separate rates for selected booking groups.
 
-Key limitation:
-A single average does not distinguish bookings with different characteristics. Segment averages can also be unreliable when few historical examples are available.
+**Key limitation**
+An overall average assigns the same estimate to every booking. Rates for small groups may also be unstable.
 
-Relevance to NullStay:
-Use historical cancellation rates as a simple baseline against which predictive models can be evaluated.
+**Relevance to NullStay**
+Use the positive-label rate from the training data as a simple baseline for evaluating booking-level probabilities.
 
-Source for the broader forecasting context:
-https://scielo.pt/pdf/tms/v13n2/13n2a03.pdf
+**Source for the broader forecasting context**
+A study of four resort hotels examined how booking-level cancellation forecasts could improve estimates of hotel demand (Antonio et al., 2017). [Read the full paper on SciELO](https://scielo.pt/pdf/tms/v13n2/13n2a03.pdf)
 
 ### 2. Booking-level machine-learning prediction
 
-Study:
-António et al. (2017) investigate hotel cancellation prediction as a classification task.
+**Study**
+An explainable prediction study combined several machine learning models and used SHAP to show which booking features influenced the model’s predictions (Gómez-Talal et al., 2025).
 
-Key limitation:
-Published performance depends on the hotels, available inputs, prediction timing, and evaluation procedure. It cannot be transferred directly to NullStay.
+**Key limitation**
+The study used city-hotel records. Evaluation across NullStay’s city and resort subsets requires evidence from both groups.
 
-Relevance to NullStay:
-Compare manageable models using a documented feature set and held-out data.
+**Relevance to NullStay**
+Compare manageable models on held-out data and test whether users can interpret the explanations shown beside the estimates.
 
-Source:
-https://scielo.pt/pdf/tms/v13n2/13n2a03.pdf
+**Source**
+Gómez-Talal, I., Azizsoltani, M., Talón-Ballestero, P., & Singh, A. (2025). Machine learning in hospitality: Interpretable forecasting of booking cancellations. *IEEE Access, 13*, 26622–26638. [Read the full author manuscript](https://burjcdigital.urjc.es/server/api/core/bitstreams/9e227b3a-9c5d-442e-9037-156922e762a2/content)
 
 ### 3. Automated cancellation decision-support systems
 
-Study:
-António et al. (2019) describe an automated machine-learning decision-support system.
+**Study**
+An automated decision-support system generated cancellation predictions for use in two hotels (Antonio et al., 2019).
 
-Key limitation:
-An operational system requires integration, monitoring, and evaluation beyond an offline prototype. Predictive performance alone does not establish business benefit.
+**Key limitation**
+Its operational results depend on how the system was deployed and how staff acted on its predictions. Establishing business impact for NullStay would require a separate operational evaluation.
 
-Relevance to NullStay:
-Develop a bounded dashboard and evaluate its prediction quality, probability calibration, explanation presentation, and processing speed.
+**Relevance to NullStay**
+Build a dashboard that supports staff review and evaluate its predictions, explanations, and processing speed under documented test conditions.
 
-Source:
-https://reference-global.com/article/10.5334/dsj-2019-032?tab=preview
+**Source**
+[Read the open-access journal article](https://reference-global.com/article/10.5334/dsj-2019-032)
 
 ## Engineering Gap / Limitation
 
-Hotel cancellation prediction and decision-support systems already exist. NullStay does not claim a new algorithm or that existing products lack this capability.
+NullStay’s engineering challenge is to turn historical booking records into estimates staff can interpret. The dashboard must validate booking inputs, use fields that can be justified at the intended prediction point, and explain how the model used those inputs.
 
-The project will investigate whether a manageable dashboard can combine cancellation estimates, understandable model explanations, and aggregate booking summaries through a transparent and repeatable workflow.
-
-The engineering challenges include validating inputs, avoiding future-information leakage, assessing probability quality, and communicating the limits of historical data.
+The dashboard will sum individual probabilities to estimate the number of cancellations or no-shows in a batch. This makes probability quality important. A model can rank bookings by risk while consistently overstating the expected number of cancellations or no-shows.
 
 ## Initial Project Objectives
 
-- O1: To design a hotel booking cancellation prediction dashboard with defined users, supported tasks, inputs, outputs, and decision-support boundaries.
-- O2: To develop the dashboard with a validated tabular-data pipeline, cancellation prediction, model explanations, and batch results.
-- O3: To evaluate predictive performance, probability calibration, and processing speed against simple baselines using held-out data.
+- **O1:** To design a historical dashboard that lets reservation staff compare the proportion of bookings that ended in cancellation or no-show by hotel type and arrival period.
+- **O2:** To develop a workflow that validates and scores single bookings and CSV batches, explains which inputs influenced individual estimates, and reports the expected number of cancellations or no-shows in a batch.
+- **O3:** To evaluate predictive performance and probability quality against a historical-rate baseline using held-out records, and assess the dashboard against its usability and response-time targets.
 
 ## Target Users
 
 Hotel reservation staff and revenue-management analysts.
 
-These are intended users. Their needs and the prototype's usability have not yet been validated through user testing.
+These are the intended users. User testing will assess whether participants can complete the planned tasks and interpret the displayed probabilities.
 
 ## Initial Supported Tasks
 
-- Explore historical booking and cancellation patterns.
-- Estimate cancellation likelihood for a compatible booking record.
-- Score multiple booking records uploaded as a compatible CSV.
-- Display inputs that influenced the model's prediction.
-- Summarise estimated cancellations across a supplied batch.
-- Export predictions for human review.
+- Explore historical booking outcomes by hotel type and arrival period.
+- Estimate the probability of cancellation or no-show for a compatible booking record.
+- Upload a compatible CSV and identify rows that need correction.
+- Review which inputs influenced an individual estimate.
+- View the expected number of cancellations or no-shows in a batch.
+- Export predictions and validation results for staff review.
 
-Model explanations will describe associations within the fitted model, not proven causes of cancellation.
+Model explanations describe how the fitted model used its inputs.
 
 ## Initial Prediction Task
 
-Predict the outcome represented by the dataset's `is_canceled` label using a justified subset of booking-related fields.
+Predict the outcome represented by `is_canceled` using an audited subset of booking fields. The Week 3 inspection confirmed that label `1` includes both cancellations and no-shows. NullStay will display the estimate as **“Probability of cancellation or no-show.”**
 
-The intended interface will use information available when a reservation is entered or confirmed. However, the historical dataset is not a complete booking-time event log.
-
-The final prediction point, feature set, and treatment of no-show records will be determined through inspection of the downloaded dataset and its documentation.
-
-Fields revealing the final outcome or later events will not be used as prediction inputs. Any remaining uncertainty about feature availability will be recorded.
+The intended prediction point is when a reservation is entered or confirmed. The historical records provide limited evidence about which fields were available at that point. The final feature set remains subject to review. Final reservation status and status date are excluded from model inputs because they reveal outcome information.
 
 ## Data Sources
 
 ### Primary Application Dataset
 
-Hotel Booking Demand, published by António, de Almeida, and Nunes (2019), accessed through the Kaggle distribution.
+NullStay uses the Hotel Booking Demand dataset, accessed through Kaggle. The Week 3 inspection confirmed **119,390 bookings** across **32 columns**, comprising **40,060 Resort Hotel** records and **79,330 City Hotel** records. Arrival dates range from **1 July 2015 to 31 August 2017**.
 
-The original publication describes 40,060 resort-hotel bookings and 79,330 city-hotel bookings. These are commonly distributed as one combined CSV with a hotel identifier.
+**Kaggle**
+[Download the Hotel Booking Demand dataset](https://www.kaggle.com/datasets/jessemostipak/hotel-booking-demand)
 
-These are published counts, not locally verified inspection results.
-
-Kaggle:
-https://www.kaggle.com/datasets/jessemostipak/hotel-booking-demand
-
-Original dataset publication:
-António, N., de Almeida, A., & Nunes, L. (2019).
-Hotel booking demand datasets.
-Data in Brief, 22, 41–49.
-
-https://doi.org/10.1016/j.dib.2018.11.126
+**Original dataset publication**
+Antonio, N., de Almeida, A., & Nunes, L. (2019). Hotel booking demand datasets. *Data in Brief, 22*, 41–49. [Read the dataset publication](https://doi.org/10.1016/j.dib.2018.11.126)
 
 ### Supporting Data Dictionary
 
-The published field definitions and distribution documentation will support schema interpretation and feature-availability review.
-
-https://github.com/rfordatascience/tidytuesday/tree/main/data/2020/2020-02-11
+The field definitions support schema interpretation and the review of candidate model inputs. [Open the Hotel Booking Demand data dictionary](https://github.com/rfordatascience/tidytuesday/tree/main/data/2020/2020-02-11)
 
 ### Data-Source Clarification
 
-The Kaggle CSV, original publication, and data dictionary refer to the same underlying application dataset. They are not three independent training datasets.
+The Kaggle CSV, dataset publication, and data dictionary document one underlying application dataset. NullStay follows Topic 3’s tabular pathway and inspected two subsets of that dataset: City Hotel and Resort Hotel. The research papers above support the problem statement and comparison with existing approaches.
 
-NullStay follows Topic 3's tabular-data pathway, which permits one justified dataset. This differs from the original Topic 1 document-based project framing and will be identified transparently.
-
-Dataset version, access date, licence, file fingerprint, missing values, repeated rows, and field definitions will be recorded during the data audit.
+The [Week 3 data inventory](week3_data_inventory.md) records the inspection findings. The [pipeline manifest](../data/pipeline_v1/tabular/pipeline_manifest.json) records the source and output checksums.
 
 ## Similar to EduAdvisor
 
-Both applications require clear requirements, traceable data, data preparation, evaluation, and Responsible AI controls.
-
-Both must communicate limitations and be evaluated against defined acceptance criteria.
+Both applications require clear requirements, traceable data, data preparation, evaluation, and Responsible AI controls. Both must communicate the limitations of their outputs and be evaluated against defined acceptance criteria.
 
 ## Different from EduAdvisor
 
-NullStay uses structured hotel booking records to predict cancellation outcomes and display results through a dashboard.
-
-It does not provide conversational answers from retrieved documents. Evaluation will focus on classification performance, probability calibration, processing speed, and understandable presentation.
+EduAdvisor uses retrieved documents to answer questions. NullStay uses structured hotel booking records to estimate probabilities and display results through a dashboard. NullStay’s evaluation focuses on predictive performance, probability quality, usability, and processing speed.
 
 ## Responsible AI Risks
 
 ### Risk 1 — Incorrect predictions and overreliance
 
-Potential harm:
-Staff may overestimate or underestimate cancellation risk and make unsuitable planning decisions. A genuine guest could be treated unfairly after a false high-risk prediction.
+**Potential harm**
+Staff may treat an uncertain estimate as a definite outcome and make unsuitable planning or guest decisions.
 
-Proposed control:
-Retain human review and communicate limitations. Do not automatically cancel bookings, reject guests, impose penalties, or determine overbooking levels.
+**Proposed control**
+Label probabilities as estimates and keep staff responsible for reservations, guest penalties, pricing, and overbooking.
 
 ### Risk 2 — Information leakage
 
-Potential harm:
-Using final reservation status or later information could produce misleadingly strong evaluation results.
+**Potential harm**
+Using final reservation status or other later information could produce misleadingly strong evaluation results.
 
-Proposed control:
-Audit feature availability, document excluded inputs, and keep final test data separate from model development.
+**Proposed control**
+Audit feature availability, document excluded inputs, fit learned preprocessing on training data, and keep the final test data separate from model development.
 
 ### Risk 3 — Unequal model performance
 
-Potential harm:
-Errors may differ between hotel types or booking segments.
+**Potential harm**
+Prediction errors may differ between city and resort bookings.
 
-Proposed control:
-Evaluate sufficiently represented segments separately, report sample sizes and uncertainty, and avoid using predictions as justification for discriminatory treatment.
+**Proposed control**
+Report sample sizes and evaluate each hotel subset when the test data support meaningful comparisons.
 
 ### Risk 4 — Privacy in uploaded files
 
-Potential harm:
-User-uploaded booking records may contain names, contact details, or other unnecessary personal information.
+**Potential harm**
+Uploaded booking files may contain names, contact details, or other unnecessary personal information.
 
-Proposed control:
-Define an accepted input schema, reject unnecessary identifying fields, and avoid retaining uploaded records by default.
+**Proposed control**
+Define the accepted input schema, keep guest identifiers outside the required inputs, and process uploaded files without intentionally retaining them.
 
 ### Risk 5 — Historical-data limitations
 
-Potential harm:
-Users may assume that performance on older records from two hotels applies to current hotels in other locations.
+**Potential harm**
+Staff may assume that performance on historical records from two Portuguese hotels applies to current hotels in other locations.
 
-Proposed control:
-Describe NullStay as a historical-data prototype. Require new validation before operational use.
-
-## Current Status
-
-Initial project framing completed.
-
-Dataset inspection, feature confirmation, model development, and evaluation are pending. No predictive performance or operational benefit is claimed.
+**Proposed control**
+State the dataset’s location and date range, describe the evaluation conditions, and require relevant validation before operational use.
