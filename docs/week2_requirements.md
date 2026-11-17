@@ -27,7 +27,7 @@ NullStay’s planned contribution is a dashboard prototype that validates bookin
 
 ### Objectives
 
-- **O1:** To design a historical dashboard that lets reservation staff compare the proportion of bookings that ended in cancellation or no-show by hotel type and arrival period.
+- **O1:** To design a dashboard that lets reservation staff view historical cancellation and no-show rates for their hotel by arrival period.
 - **O2:** To develop a workflow that validates and scores single bookings and CSV batches, explains which inputs influenced individual estimates, and reports the expected number of cancellations or no-shows in a batch.
 - **O3:** To evaluate predictive performance and probability quality against a historical-rate baseline using held-out records, and assess the dashboard against its usability and response-time targets.
 
