@@ -75,7 +75,7 @@ Evaluation will cover predictive discrimination, probability calibration, dashbo
 
 | ID | Requirement | Acceptance check |
 |---|---|---|
-| FR1 | The system shall display historical booking counts, positive-outcome counts, and positive-outcome rates, with filters for hotel type and arrival period. | Compare displayed values with independently calculated values for selected filters. |
+| FR1 | The system shall display historical booking counts, positive-outcome counts, and positive-outcome rates, with filters for the selected hotel by arrival period. | Compare displayed values with independently calculated values for selected filters. |
 | FR2 | The system shall accept one booking through a form, validate the supported inputs, and return an estimated probability of cancellation or no-show. | A valid booking produces a probability between 0 and 1. Invalid inputs produce a clear validation message. |
 | FR3 | The system shall display up to three model-influential inputs alongside a prediction and explain that they describe model associations. | Inspect example predictions for consistent inputs, readable labels, and an explanation of their limits. |
 | FR4 | The system shall accept a CSV with the required booking fields, produce a probability for each valid row, and identify invalid rows. | Test a valid file, a file missing required columns, and a file containing invalid rows. |
