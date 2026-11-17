@@ -29,7 +29,7 @@ António, N., de Almeida, A., & Nunes, L. (2017).
 Predicting hotel booking cancellations to decrease uncertainty and increase revenue.
 Tourism & Management Studies, 13(2), 25–39.
 
-https://doi.org/10.18089/tms.2017.13203
+https://scielo.pt/pdf/tms/v13n2/13n2a03.pdf
 
 ### Evidence 2 — Cancellation prediction has been studied in operational decision support
 
@@ -42,7 +42,7 @@ António, N., de Almeida, A., & Nunes, L. (2019).
 An Automated Machine Learning Based Decision Support System to Predict Hotel Booking Cancellations.
 Data Science Journal, 18, 32.
 
-https://doi.org/10.5334/dsj-2019-032
+https://reference-global.com/article/10.5334/dsj-2019-032?tab=preview
 
 ## Initial Related Work / Existing Approaches
 
@@ -58,7 +58,7 @@ Relevance to NullStay:
 Use historical cancellation rates as a simple baseline against which predictive models can be evaluated.
 
 Source for the broader forecasting context:
-https://doi.org/10.18089/tms.2017.13203
+https://scielo.pt/pdf/tms/v13n2/13n2a03.pdf
 
 ### 2. Booking-level machine-learning prediction
 
@@ -72,7 +72,7 @@ Relevance to NullStay:
 Compare manageable models using a documented feature set and held-out data.
 
 Source:
-https://doi.org/10.18089/tms.2017.13203
+https://scielo.pt/pdf/tms/v13n2/13n2a03.pdf
 
 ### 3. Automated cancellation decision-support systems
 
@@ -86,7 +86,7 @@ Relevance to NullStay:
 Develop a bounded dashboard and evaluate its prediction quality, probability calibration, explanation presentation, and processing speed.
 
 Source:
-https://doi.org/10.5334/dsj-2019-032
+https://reference-global.com/article/10.5334/dsj-2019-032?tab=preview
 
 ## Engineering Gap / Limitation
 
